@@ -57,8 +57,12 @@ def extract_time_from_string(input_str):
     try:
         # Split the string by whitespace to extract individual words
         words = input_str.split()
+        t = {'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10}
 
         for i, word in enumerate(words):
+            if word.lower() in t:
+                # Replace the word with its numeric value
+                words[i] = str(t[word.lower()])
             if 'hour' in word:
                 # Convert hours to seconds
                 seconds = int(words[i - 1]) * 3600
