@@ -35,7 +35,7 @@ def listen(check):
                 # Initialize microphone input
                 with speech_recognition.Microphone() as mic:
                     recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                    audio = recognizer.listen(mic, timeout=0.5)
+                    audio = recognizer.listen(mic)
 
                     # Convert audio to text
                     text = recognizer.recognize_whisper(audio, translate=True)
