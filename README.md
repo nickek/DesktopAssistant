@@ -16,6 +16,8 @@ Desktop Assistant is a Python-based application that brings the convenience of v
 
 - **User-Friendly:** The intuitive interface and straightforward voice commands make Desktop Assistant accessible to users of all levels.
 
+### Installation
+
 Follow these simple steps to get Desktop Assistant up and running on your machine.
 
 1. Clone the repository:
@@ -30,3 +32,29 @@ Follow these simple steps to get Desktop Assistant up and running on your machin
     ```bash
     python main.py
 
+### Getting Started
+
+After running main.py, to get started simply say "Hello Computer" followed by any commands listed down below.
+
+**Example:**
+
+   1.
+      ```
+      User: "Hello Computer what's the time?"
+      
+   2.
+      ```
+      User: "Hello Computer google pumpkin recipes."
+
+   3.
+      ```
+      User: "Hello Computer shutdown in two hours." 
+
+### Command List
+
+- **Google:** Search anything on google
+- **Date:** Ask for the current date
+- **Time:** Ask for the current time
+- **Weather:** See real weather data of a provided city
+- **Shutdown:** Set shutdown timers or cancel shutdown
+- **Exit:** Exits program
