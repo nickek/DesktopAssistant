@@ -56,7 +56,7 @@ def listen(check):
                         # Cleaning up command
                         if ',' in command:
                             command = command.strip(',')
-                            command = command.lstrip()
+                        command = command.lstrip()
                         print(f'Command: {command}')
                         ch.command_handler(command, engine)
 
