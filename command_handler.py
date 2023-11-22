@@ -1,14 +1,18 @@
 import subprocess
 import sys
 import datetime
-
+import webbrowser
 
 def command_handler(command, engine):
-    month = datetime.datetime.now().month
-    day = datetime.datetime.now().day
-    year = datetime.datetime.now().year
 
-    if 'shut down' in command:
+    if 'google' in command:
+        search = command.replace('google', '').strip()
+        webbrowser.open(f'https://www.google.com/search?q={search}')
+        engine.say(f'Opening a new google tab and searching {search}')
+        engine.runAndWait()
+        return
+    
+    elif 'shut down' in command:
         if 'cancel' in command:
             subprocess.run('shutdown /a', shell=True)
             engine.say('Okay cancelled shutdown.')
@@ -28,6 +32,9 @@ def command_handler(command, engine):
             return
 
     elif 'date' in command:
+        month = datetime.datetime.now().month
+        day = datetime.datetime.now().day
+        year = datetime.datetime.now().year
         engine.say("Todays date is: ")
         engine.say(month)
         engine.say(day)

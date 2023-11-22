@@ -30,7 +30,7 @@ def listen(check):
                 audio = recognizer.listen(mic)
 
                 # Convert audio to text
-                text = recognizer.recognize_whisper(audio)
+                text = recognizer.recognize_whisper(audio, translate=True)
                 text = text.lower()
                 print(f'Log: {text}')
 
@@ -53,6 +53,10 @@ def listen(check):
                         engine.runAndWait()
                     command = text.replace(WAKE_WORD, '').strip()
                     if command:
+                        # Cleaning up command
+                        if ',' in command:
+                            command = command.strip(',')
+                            command = command.lstrip()
                         print(f'Command: {command}')
                         ch.command_handler(command, engine)
 
