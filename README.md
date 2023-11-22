@@ -16,7 +16,7 @@ Desktop Assistant is a Python-based application that brings the convenience of v
 
 - **User-Friendly:** The intuitive interface and straightforward voice commands make Desktop Assistant accessible to users of all levels.
 
-### Installation
+## Installation
 
 Follow these simple steps to get Desktop Assistant up and running on your machine.
 
@@ -32,7 +32,7 @@ Follow these simple steps to get Desktop Assistant up and running on your machin
     ```bash
     python main.py
 
-### Getting Started
+## Getting Started
 
 After running main.py, to get started simply say "Hello Computer" followed by any commands listed down below.
 
