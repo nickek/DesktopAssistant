@@ -12,7 +12,9 @@ def listen(check):
     try:
         # Initialize speech recognition and TTS engine
         recognizer = speech_recognition.Recognizer()
-
+        recognizer.energy_threshold = 400
+        recognizer.dynamic_energy_threshold = False
+        
         engine = pyttsx3.init()
 
         voices = engine.getProperty('voices')
@@ -33,7 +35,7 @@ def listen(check):
                 # Initialize microphone input
                 with speech_recognition.Microphone() as mic:
                     recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                    audio = recognizer.listen(mic)
+                    audio = recognizer.listen(mic, timeout=0.5)
 
                     # Convert audio to text
                     text = recognizer.recognize_whisper(audio, translate=True)
@@ -76,6 +78,8 @@ def listen(check):
 
             except speech_recognition.UnknownValueError:
                 recognizer = speech_recognition.Recognizer()
+                recognizer.energy_threshold = 400
+                recognizer.dynamic_energy_threshold = False
                 continue
 
     except Exception as e:
