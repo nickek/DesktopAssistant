@@ -2,12 +2,17 @@ import subprocess
 import sys
 import datetime
 import webbrowser
+import logging
+logging.basicConfig(filename='DesktopAssistant.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.getLogger("comtypes.client._code_cache").setLevel(logging.ERROR) # Suppress INFO messages from comtypes.client._code_cache logger
+
 
 def command_handler(command, engine):
 
     if 'google' in command:
         search = command.replace('google', '').strip()
         webbrowser.open(f'https://www.google.com/search?q={search}')
+        logging.info(f'Response: Opening a new google tab and searching {search}')
         engine.say(f'Opening a new google tab and searching {search}')
         engine.runAndWait()
         return
@@ -15,6 +20,7 @@ def command_handler(command, engine):
     elif 'shut down' in command:
         if 'cancel' in command:
             subprocess.run('shutdown /a', shell=True)
+            logging.info('Response: Okay cancelled shutdown.')
             engine.say('Okay cancelled shutdown.')
             engine.runAndWait()
             return
@@ -23,10 +29,12 @@ def command_handler(command, engine):
             print(time)
             subprocess.run(f'shutdown /s /t {time}', shell=True)
             time_string = seconds_to_human_readable(time)
+            logging.info(f'Response: Okay, shutting down in {time_string}.')
             engine.say(f'Okay, shutting down in {time_string}.')
             engine.runAndWait()
         else:
             subprocess.run('shutdown /s /t 3600', shell=True)
+            logging.info('Response: Okay shutting down in one hour.')
             engine.say('Okay shutting down in one hour.')
             engine.runAndWait()
             return
@@ -35,26 +43,26 @@ def command_handler(command, engine):
         month = datetime.datetime.now().month
         day = datetime.datetime.now().day
         year = datetime.datetime.now().year
-        engine.say("Todays date is: ")
-        engine.say(month)
-        engine.say(day)
-        engine.say(year)
+        logging.info(f"Response: Todays date is {month} {day} {year}")
+        engine.say(f"Todays date is {month} {day} {year}")
         engine.runAndWait()
         return
 
     elif 'time' in command:
         Time = datetime.datetime.now().strftime("%H:%M:%S")
-        engine.say('The current time is')
-        engine.say(Time)
+        logging.info(f'Response: The current time is {Time}')
+        engine.say(f'The current time is {Time}')
         engine.runAndWait()
         return
 
     elif 'exit' in command:
+        logging.info('Response: Okay exitting program.')
         engine.say('Okay exitting program.')
         engine.runAndWait()
         sys.exit()
 
     else:
+        logging.info(f'Response: I Cant find the command: {command}.')
         engine.say(f'I Cant find the command: {command}.')
         engine.runAndWait()
         return
