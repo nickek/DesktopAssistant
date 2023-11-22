@@ -3,6 +3,9 @@ import sys
 import datetime
 import webbrowser
 import logging
+import requests
+import speech_recognition
+import voice_handler
 logging.basicConfig(filename='DesktopAssistant.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.getLogger("comtypes.client._code_cache").setLevel(logging.ERROR) # Suppress INFO messages from comtypes.client._code_cache logger
 
@@ -23,6 +26,10 @@ def command_handler(command, engine):
 
         elif 'time' in command:
             time(command, engine)
+            return
+
+        elif 'weather' in command:
+            get_weather(command, engine)
             return
 
         elif 'exit' in command:
@@ -100,6 +107,61 @@ def cant_find(command, engine):
     engine.say(f'I Cant find the command: {command}.')
     engine.runAndWait()
     return
+
+
+def get_weather(command, engine):
+    key = 'd94f6a181d6172e5246b69c78f20892d'
+    engine.say('What city would you like to know the weather for?')
+    engine.runAndWait()
+    city = get_city()
+    engine.say("Getting weather for " + city)
+    engine.runAndWait()
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=imperial'.format(city, key)
+
+    resi = requests.get(url)
+    data = resi.json()
+    temp = data['main']['temp']
+    feels_like = data['main']['feels_like']
+    description = data['weather'][0]['description']
+    humidity = data['main']['humidity']
+    wind_speed = data['wind']['speed']
+    cloudiness = data['clouds']['all']
+    visibility = data['visibility']
+
+    engine.say("Weather outside is {}".format(description))
+    engine.say(
+        "Temperatures today are {} degrees Fahrenheit but it feels like {} degrees Fahrenheit".format(temp, feels_like))
+    engine.say("Humidity percentage is {} today".format(humidity))
+    engine.say("Winds speeds are currently {}".format(wind_speed))
+    engine.say("Cloud coverage is at {} percent today".format(cloudiness))
+    engine.say("Visibility is {} percent today".format(visibility))
+    engine.runAndWait()
+    return
+
+
+def get_city():
+    try:
+        recognizer = speech_recognition.Recognizer()
+        # Initialize microphone input
+        with speech_recognition.Microphone() as mic:
+            recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+            audio = recognizer.listen(mic)
+
+            # Convert audio to text
+            city = recognizer.recognize_whisper(audio, translate=True)
+
+            if city:
+                # Cleaning up text
+                city = city.lower()
+                city = voice_handler.remove_special_characters(city)
+                logging.info(f'Message: {city}')
+
+            print(f'Log: {city}')
+
+    except Exception as e:
+        print(f'Error: {e}')
+        logging.error(e)
+    return city
 
 
 def extract_time_from_string(input_str):
