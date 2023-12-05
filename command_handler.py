@@ -6,6 +6,7 @@ import logging
 import requests
 import speech_recognition
 import voice_handler
+import config
 logging.basicConfig(filename='DesktopAssistant.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.getLogger("comtypes.client._code_cache").setLevel(logging.ERROR) # Suppress INFO messages from comtypes.client._code_cache logger
 
@@ -110,7 +111,7 @@ def cant_find(command, engine):
 
 
 def get_weather(command, engine):
-    key = 'd94f6a181d6172e5246b69c78f20892d'
+    key = config.key
     engine.say('What city would you like to know the weather for?')
     engine.runAndWait()
     city = get_city()
